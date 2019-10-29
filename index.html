@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            background-color: #f5f5f5;
+        }
+
+        a {
+            color: #4183C4;
+            text-decoration: none;
+        }
+
+        p {
+            line-height: 20px;
+        }
+
+        .content {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        #abs {
+            text-align: center;
+        }
+
+        #abs .descriptor {
+            display: none;
+        }
+
+        #abs h1.title {
+            margin: .5em 0 .5em 20px;
+            font-size: x-large;
+            font-weight: bold;
+            line-height: 120%;
+        }
+
+        #abs .authors {
+            margin: .5em 0 .5em 20px;
+            font-size: medium;
+            line-height: 150%;
+        }
+
+        #abs .authors a {
+            font-size: medium;
+        }
+
+        #abs p {
+            text-align: justify;
+        }
+
+        .bib {
+            font-size: small;
+        }
+
+        .figure {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+    <div id="abs">
+        <h1>Learning Non-Convergent Non-Persistent Short-Run MCMC Toward Energy-Based Model</h1>
+        <div class="authors"><a href="mailto:enijkamp@ucla.edu">Erik Nijkamp</a>, <a href="mailto:mkhill@ucla.edu">Mitch Hill</a>, <a href="mailto:sczhu@stat.ucla.edu">Song-Chun Zhu</a>, <a href="mailto:ywu@stat.ucla.edu">Ying Nian Wu</a></div>
+        <div class="inst">
+            University of California, Los Angeles (UCLA), USA<br>
+        </div>
+        <h2>Abstract</h2>
+        <p>This paper studies a curious phenomenon in learning energy-based model (EBM) using MCMC. In each learning iteration, we generate synthesized examples by running a non-convergent, non-mixing, and non-persistent short-run MCMC toward the current model, always starting from the same initial distribution such as uniform noise distribution, and always running a fixed number of MCMC steps. After generating synthesized examples, we then update the model parameters according to the maximum likelihood learning gradient, as if the synthesized examples are fair samples from the current model. We treat this non-convergent short-run MCMC as a learned generator model or a flow model. We provide arguments for treating the learned non-convergent short-run MCMC as a valid model. We show that the learned short-run MCMC is capable of generating realistic images. More interestingly, unlike traditional EBM or MCMC, the learned short-run MCMC is capable of reconstructing observed images and interpolating between images, like generator or flow models.
+        <p>
+    </div>
+    <hr>
+    <h2>Paper</h2>
+    The publication can be obtained <a href="https://arxiv.org/abs/1904.09770">here</a>.
+    <pre class="bib">
+@article{nijkamp2019shortrun,
+  title={Learning Non-Convergent Non-Persistent Short-Run MCMC Toward Energy-Based Model},
+  author={Nijkamp, Erik and Hill, Mitch and Zhu, Song-Chun and Wu, Ying Nian},
+  journal={NeurIPS 2019},
+  year={2019}
+}
+</pre>
+    <h2>Poster</h2>
+    <p>The poster can be obtained <a href="https://raw.githubusercontent.com/enijkamp/project_short_run/master/poster.pdf">here</a>.</p>
+    <hr>
+    <h2>Code</h2>
+    <p>The code can be obtained <a href="http://github.com/enijkamp/short_run">here</a>.</p>
+    <hr>
+    <h2>Experiments</h2>
+    <h3>Experiment 1: Synthesis</h3>
+    <p>We evaluate the fidelity of generated examples on various datasets, each reduced to \(40,000\) observed examples. Figure 1 depicts the transition of short-run MCMC from uniform noise towards realistic images. Figure 2 depicts generated samples for various datasets with \(K=100\) Langevin steps for both training and evaluation. Despite its simplicity, short-run MCMC is competitive.</p>
+    <div class="figure">
+        <img src="./figure/transition/527_celeba_convnet_redo_518_higher_lr_beta1_transition_2/2019-04-15-23-57-48/images/x_neg_1_transition_6.png" width="500">
+        <p class="caption"><b>Figure 1:</b> Generating synthesized examples by running 100 steps of Langevin dynamics initialized from uniform noise for CelebA \((64\times64)\).</p>
+    </div>
+    <div class="figure">
+        <img src="./figure/fidelity/cifar10/566_cifar10_short_convnet_noise_003_ndf_128_fid_is_1/2019-04-17-19-31-53/000089200_x_neg_1_3_pretty.png" width="260">
+        <img src="./figure/fidelity/celeba/527_celeba_convnet_redo_518_higher_lr_beta1_09_sample_1/2019-04-19-23-32-03/images/000000031_x_neg_1_pretty.png" width="260">
+        <img src="./figure/fidelity/lsun/581_bedroom64_convnet_large_less_noise_cont_4_lower_noise_1/2019-05-11-14-49-35/images/000180000_x_neg_1_3.png" width="260">
+        <p class="caption"><b>Figure 2:</b> Generated samples for K = 100 MCMC steps. From left to right: (1) CIFAR-10 (\(32 \times 32\)), (2) CelebA (\(64 \times 64)\), (3) LSUN Bedroom (\(64 \times 64)\).</p>
+    </div>
+    <h3>Experiment 2: Interpolation</h3>
+    <p>We show that unlike traditional EBM and MCMC, the learned short-run MCMC is capable of interpolating different images, just like a generator or a flow model can do. Figure 3 depicts short-run MCMC with with interpolated noise \(z_\rho = \rho z_1 + \sqrt{1-\rho^2} z_2\) where \(\rho\in[0,1]\) on CelebA \((64\times64)\).</p>
+    <div class="figure">
+        <img src="./figure/interpolation/527_celeba_convnet_redo_518_higher_lr_beta1_09_interpolate/2019-04-12-23-29-58/interpolation_few.png" width="500">
+        <p class="caption"><b>Figure 3:</b> Interpolation by short-run MCMC resembling a generator model: The transition depicts the sequence \(M_\theta(z_\rho)\) with interpolated noise \(z_\rho = \rho z_1 + \sqrt{1-\rho^2} z_2\) where \(\rho\in[0,1]\) on CelebA (\(64 \times 64)\). Left: \(M_\theta(z_1)\). Right: \(M_\theta(z_2)\).</p>
+    </div>
+    <h3>Experiment 3: Reconstruction</h3>
+    <p>We demonstrate reconstruction of observed examples. For an observed image \(x\), we reconstruct \(x\) by running gradient descent on the least squares loss function \(L(z) = \|x - M_\theta(z)\|^2\), initializing from \(z_0 \sim p_0(z)\), and iterates \(z_{t+1} = z_{t} - \eta_t L'(z_t)\). The reconstruction ability of the short-run MCMC is due to the fact that it is not mixing.</p>
+    <div class="figure">
+        <img src="./figure/reconstruct/536_celeba128_convnet_redo_518_8_gpu_beta1_09_medium_lr_no_wn_good_cont_reconstruct/2019-04-19-22-11-52/images/x_reconstruct_5_rows.png" width="500">
+        <p class="caption"><b>Figure 4:</b> Reconstruction by short-run MCMC resembling a generator or flow model: The transition depicts \(M_\theta(z_t)\) over time \(t\) from random initialization \(t=0\) to reconstruction \(t=200\) on CelebA (\(64 \times 64\)). Left: Random initialization. Right: Observed examples.</p>
+    </div>
+    <hr>
+    <h2>Acknowledgements</h2>
+    <p>The work is supported by DARPA XAI project N66001-17-2-4029; ARO project W911NF1810296; and ONR MURI project N00014-16-1-2007; and XSEDE grant ASC170063. We thank Prof. Stu Geman, Prof. Xianfeng (David) Gu, Diederik P. Kingma, Guodong Zhang, and Will Grathwohl for helpful discussions.</p>
+</div>
+</body>
+</html>
